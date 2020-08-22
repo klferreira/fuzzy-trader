@@ -5,8 +5,7 @@
   "description": "Fuzzy Trader project",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development nodemon --exec \"babel-node app.js\"",
-    "start:prod": "NODE_ENV=production nodemon --exec \"babel-node app.js\"",
+    "start": "nodemon --exec \"babel-node app.js\"",
     "deploy": "git push heroku master"
   },
   "dependencies": {
