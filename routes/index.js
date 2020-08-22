@@ -12,7 +12,7 @@ const loadRoutes = (app) => {
   loadAuthMiddleware(app);
 
   app.use('/auth', authRouter);
-  app.use("/price", priceRouter);
+  app.use("/price", passport.authenticate('jwt', { session: false }), priceRouter);
 
   app.get("/health-check", (_, res) =>
     res.json({
