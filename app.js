@@ -5,6 +5,10 @@ import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
 
+import Ticker from "./models/Ticker";
+import createPricingService from './service/pricing';
+import mockedStockClient from './lib/mock/stock-client';
+import mockedCryptoClient from './lib/mock/crypto-client';
 
 var app = express();
 
@@ -29,6 +33,17 @@ mongoose.connect(process.env.MLAB_URI)
 app.get("/", (_, res) =>
   res.json({ status: "live", env: process.env.NODE_ENV, mlab: process.env.MLAB_URI })
 );
+
+app.get("/prices", (_, res) => {
+  const stock = mockedStockClient();
+  const crypto = mockedCryptoClient();
+  const service = createPricingService(stock, crypto)
+
+  Ticker.find()
+    .then(tickers => tickers.map(t => t.toObject()))
+    .then(service.getPrices)
+    .then(prices => res.json(prices))
+})
 
 const port = process.env.PORT || 4000;
 
