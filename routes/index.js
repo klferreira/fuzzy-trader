@@ -1,20 +1,15 @@
-import passport from 'passport';
-
 // routers
-import authRouter from './auth';
+import authRouter from "./auth";
 import priceRouter from "./price";
 
 // middlewares
-import loadAuthMiddleware from './middlewares/auth';
-import cors from './middlewares/cors';
+import { auth, cors, jwt } from "./middlewares";
 
 const loadRoutes = (app) => {
-  
-  loadAuthMiddleware(app);
+  app.use(auth(), cors());
 
-  app.use(cors);
-  app.use('/auth', authRouter);
-  app.use("/price", passport.authenticate('jwt', { session: false }), priceRouter);
+  app.use("/auth", authRouter);
+  app.use("/price", jwt(), priceRouter);
 
   app.get("/health-check", (_, res) =>
     res.json({

@@ -8,7 +8,7 @@ const LocalStrategy = passportLocal.Strategy;
 const JwtStrategy = passportJWT.Strategy;
 const ExtractJwt = passportJWT.ExtractJwt;
 
-export default (app) => {
+export default () => {
   passport.use(
     new LocalStrategy(
       { usernameField: "email", passwordField: "password" },
@@ -53,5 +53,5 @@ export default (app) => {
     })
   );
 
-  app.use(passport.initialize());
+  return passport.initialize();
 };

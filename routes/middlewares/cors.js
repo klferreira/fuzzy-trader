@@ -1,6 +1,6 @@
 import cors from "cors";
 
-export default cors({
+export default () => cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
 
