@@ -6,11 +6,13 @@ import priceRouter from "./price";
 
 // middlewares
 import loadAuthMiddleware from './middlewares/auth';
+import cors from './middlewares/cors';
 
 const loadRoutes = (app) => {
   
   loadAuthMiddleware(app);
 
+  app.use(cors);
   app.use('/auth', authRouter);
   app.use("/price", passport.authenticate('jwt', { session: false }), priceRouter);
 
