@@ -16,7 +16,7 @@ router.post("/login", (req, res, next) => {
 
     if (!user) return res.status(401).json({ message });
 
-    res.json({ token: createJwtToken(user) });
+    res.json({ user, token: createJwtToken(user) });
   })(req, res, next);
 });
 
@@ -26,7 +26,7 @@ router.post("/register", (req, res) => {
   bcrypt.hash(password, 10).then((hash) => {
     User.create({ name, email, password: hash })
       .then(() => res.json({ message: "User created" }))
-      .catch(() => res.status(400).json({ message: "User already exists" }));
+      .catch((err) => res.status(400).json({ message: "User already exists" }));
   });
 });
 
