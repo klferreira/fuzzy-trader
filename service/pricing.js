@@ -27,7 +27,7 @@ export default (stockClient, cryptoClient) => {
             prices: prices.find((price) => price.symbol === ticker.symbol),
           })
         )
-      )
+      );
 
   const getCryptoPrices = (tickers) =>
     cryptoClient
@@ -41,17 +41,16 @@ export default (stockClient, cryptoClient) => {
         )
       );
 
-  const getPrices = tickers => {
+  const getPrices = (tickers) => {
     return Promise.all([
       getStockPrices(tickers.filter((t) => t.type === "STOCK")),
-      getCryptoPrices(tickers.filter((t) => t.type === "CRYPTO"))
-    ])
-    .then(([stocks, cryptos]) => ({ stocks, cryptos }))
+      getCryptoPrices(tickers.filter((t) => t.type === "CRYPTO")),
+    ]).then(([stocks, cryptos]) => ({ stocks, cryptos }));
   };
 
   return {
     getPrices,
     getStockPrices,
-    getCryptoPrices
+    getCryptoPrices,
   };
 };

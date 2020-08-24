@@ -26,7 +26,7 @@ router.get("/all", (req, res, next) =>
 
 router.get("/crypto", (req, res, next) =>
   Ticker.find({ type: "CRYPTO" })
-    .then((tickers) => tickers.map((t) => t.toObject()))
+    .lean()
     .then(service.getCryptoPrices)
     .then((prices) => res.json(prices))
     .catch((err) => res.status(500).send(err))
@@ -34,7 +34,7 @@ router.get("/crypto", (req, res, next) =>
 
 router.get("/stock", (req, res, next) =>
   Ticker.find({ type: "STOCK" })
-    .then((tickers) => tickers.map((t) => t.toObject()))
+    .lean()
     .then(service.getStockPrices)
     .then((prices) => res.json(prices))
     .catch((err) => res.status(500).send(err))
