@@ -3,22 +3,25 @@ import express from "express";
 import Ticker from "../models/Ticker";
 
 import PricingService from "../service/pricing";
-import mockedStockClient from "../lib/mock/stock-client";
-import mockedCryptoClient from "../lib/mock/crypto-client";
+import StockClient from "../lib/stock-client";
+import CryptoClient from "../lib/crypto-client";
 
 const router = express.Router();
 
-const stock = mockedStockClient();
-const crypto = mockedCryptoClient();
+const stock = StockClient();
+const crypto = CryptoClient();
 
 const service = PricingService(stock, crypto);
 
 router.get("/all", (req, res, next) =>
   Ticker.find()
-    .then((tickers) => tickers.map((t) => t.toObject()))
-    .then(service.getPrices)
+    .lean()
+    .then((tickers) => service.getPrices(tickers))
     .then((prices) => res.json(prices))
-    .catch((err) => res.status(500).send(err))
+    .catch((err) => {
+      res.status(500).send(err);
+      console.log(err);
+    })
 );
 
 router.get("/crypto", (req, res, next) =>
