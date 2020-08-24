@@ -1,5 +1,6 @@
 // routers
 import authRouter from "./auth";
+import userRouter from './user';
 import priceRouter from "./price";
 import walletRouter from "./wallet";
 
@@ -12,6 +13,7 @@ const loadRoutes = (app) => {
   app.use("/auth", authRouter);
   app.use("/price", jwt(), priceRouter);
   app.use('/wallet', jwt(), walletRouter);
+  app.use("/user", jwt(), userRouter);
 
   app.get("/health-check", (_, res) =>
     res.json({
