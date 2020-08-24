@@ -8,13 +8,20 @@ const router = express.Router();
 
 const service = WalletService();
 
+router.get("/", (req, res, next) =>
+  User.findById(req.user.id)
+    .then((user) => user.wallet)
+    .then((wallet) => res.json(wallet))
+    .catch(() => res.status(400).json({ message: "Something went wrong" }))
+);
+
 router.post("/add", (req, res, next) => {
   User.findById(req.user.id)
     .then((user) => service.addToWallet(req.body, user.wallet.toObject()))
-    .then((wallet) =>
-      User.updateOne({ _id: req.user.id }, { $set: { wallet } })
+    .then((wallet) => 
+      User.updateOne({ _id: req.user.id }, { $set: { wallet } }).then(() => wallet)
     )
-    .then(() => res.json({ message: "Wallet updated succesfully" }))
+    .then((wallet) => res.json(wallet))
     .catch(() => res.status(400).json({ message: "Something went wrong" }));
 });
 

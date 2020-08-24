@@ -42,8 +42,7 @@ UserSchema.set("toJSON", {
   transform: function (doc, ret, options) {
     return {
       name: ret.name,
-      email: ret.email,
-      wallet: ret.wallet,
+      email: ret.email
     };
   },
 });
