@@ -14,7 +14,7 @@ router.post("/login", (req, res, next) => {
   passport.authenticate("local", { session: false }, (err, user) => {
     if (err) return res.status(500).json({ message: "Something went wrong" });
 
-    if (!user) return res.status(401).json({ message });
+    if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     res.json({ user, token: createJwtToken(user) });
   })(req, res, next);
